@@ -4,41 +4,68 @@ import { habits } from "../db/schema";
 import { eq } from "drizzle-orm";
 
 export async function habitRoutes(app: FastifyInstance) {
-  // ... (POST e GET já feitos no Dia 2)
+  // --- DIA 2: POST ---
+  app.post("/habits", async (request, reply) => {
+    const { name } = request.body as { name: string };
 
-  // PATCH: Inverter status do hábito
+    if (!name) {
+      return reply.status(400).send({ message: "O nome é obrigatório" });
+    }
+
+    const result = await db.insert(habits).values({ name }).returning();
+    return reply.status(201).send(result[0]);
+  });
+
+  // --- DIA 2: GET ---
+  app.get("/habits", async () => {
+    const allHabits = await db.select().from(habits);
+    return allHabits;
+  });
+
+  // --- DIA 3: PATCH ---
   app.patch("/habits/:id", async (request, reply) => {
     const { id } = request.params as { id: string };
 
-    const habit = await db
-      .select()
-      .from(habits)
-      .where(eq(habits.id, id))
-      .limit(1);
+    try {
+      const habit = await db
+        .select()
+        .from(habits)
+        .where(eq(habits.id, id))
+        .limit(1);
 
-    if (habit.length === 0) {
-      return reply.status(404).send({ message: "Hábito não encontrado!" });
+      if (habit.length === 0) {
+        return reply.status(404).send({ message: "Hábito não encontrado!" });
+      }
+
+      const updated = await db
+        .update(habits)
+        .set({ is_completed: !habit[0].is_completed })
+        .where(eq(habits.id, id))
+        .returning();
+
+      return updated[0];
+    } catch (err) {
+      return reply.status(400).send({ message: "ID inválido. Use um UUID." });
     }
-
-    const updated = await db
-      .update(habits)
-      .set({ is_completed: !habit[0].is_completed })
-      .where(eq(habits.id, id))
-      .returning();
-
-    return updated[0];
   });
 
-  // DELETE: Remover hábito
+  // --- DIA 3: DELETE ---
   app.delete("/habits/:id", async (request, reply) => {
     const { id } = request.params as { id: string };
 
-    const result = await db.delete(habits).where(eq(habits.id, id)).returning();
+    try {
+      const result = await db
+        .delete(habits)
+        .where(eq(habits.id, id))
+        .returning();
 
-    if (result.length === 0) {
-      return reply.status(404).send({ message: "Hábito não existe." });
+      if (result.length === 0) {
+        return reply.status(404).send({ message: "Hábito não existe." });
+      }
+
+      return reply.status(204).send();
+    } catch (err) {
+      return reply.status(400).send({ message: "ID inválido." });
     }
-
-    return reply.status(204).send(); // Sucesso sem conteúdo
   });
 }
