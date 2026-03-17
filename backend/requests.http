@@ -1,6 +1,16 @@
+### Criar um hábito
 POST http://localhost:3333/habits
 Content-Type: application/json
 
 {
-  "name": "Estudar TypeScript"
+  "name": "Beber 2L de água"
 }
+
+### Listar todos os hábitos
+GET http://localhost:3333/habits
+
+### Atualizar status de um hábito (Substitua o ID pelo que o GET retornar)
+PATCH http://localhost:3333/habits/1
+
+### Deletar um hábito
+DELETE http://localhost:3333/habits/0
