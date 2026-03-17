@@ -1,4 +1,4 @@
-### Criar um hábito
+# @name createHabit
 POST http://localhost:3333/habits
 Content-Type: application/json
 
@@ -6,11 +6,16 @@ Content-Type: application/json
   "name": "Beber 2L de água"
 }
 
+###
+
+# Captura o ID da resposta do POST acima
+@habitId = {{createHabit.response.body.id}}
+
 ### Listar todos os hábitos
 GET http://localhost:3333/habits
 
-### Atualizar status de um hábito (Substitua o ID pelo que o GET retornar)
-PATCH http://localhost:3333/habits/1
+### Atualizar status usando a variável
+PATCH http://localhost:3333/habits/{{habitId}}
 
-### Deletar um hábito
-DELETE http://localhost:3333/habits/0
+### Deletar usando a variável
+DELETE http://localhost:3333/habits/{{habitId}}
