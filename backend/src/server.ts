@@ -1,11 +1,39 @@
 import fastify from "fastify";
+import cors from "@fastify/cors";
 import { habitRoutes } from "./routes/habits";
+import * as dotenv from "dotenv";
 
-const app = fastify();
+dotenv.config();
+
+const app = fastify({
+  logger: true,
+});
+
+app.register(cors, {
+  origin: "*",
+});
 
 app.register(habitRoutes);
 
-// Adicionado host '0.0.0.0' para evitar problemas de acesso no Codespaces
-app.listen({ port: 3333, host: "0.0.0.0" }).then(() => {
-  console.log("🔥 Server running on http://localhost:3333");
+app.get("/", async () => {
+  return {
+    status: "online",
+    message: "Habit Tracker API v1.0",
+    docs: "/habits",
+  };
 });
+
+const port = Number(process.env.PORT) || 3333;
+
+app
+  .listen({
+    port: port,
+    host: "0.0.0.0",
+  })
+  .then(() => {
+    console.log(`
+  🚀 Servidor Full Stack Online!
+  📡 Porta: ${port}
+  🔗 Local: http://localhost:${port}
+  `);
+  });
