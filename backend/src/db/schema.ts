@@ -5,4 +5,5 @@ export const habits = pgTable("habits", {
   name: text("name").notNull(),
   is_completed: boolean("is_completed").default(false).notNull(),
   created_at: timestamp("created_at").defaultNow().notNull(),
+  teste: text("teste"),
 });
