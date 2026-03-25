@@ -10,7 +10,7 @@ const app = fastify({
 });
 
 app.register(cors, {
-  origin: "*", // Ou a URL específica do seu front
+  origin: "*",
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"], // <-- O segredo está aqui!
 });
 

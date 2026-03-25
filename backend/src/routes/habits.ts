@@ -4,7 +4,6 @@ import { habits } from "../db/schema";
 import { eq } from "drizzle-orm";
 
 export async function habitRoutes(app: FastifyInstance) {
-  // --- DIA 2: POST ---
   app.post("/habits", async (request, reply) => {
     const { name } = request.body as { name: string };
 
@@ -16,13 +15,11 @@ export async function habitRoutes(app: FastifyInstance) {
     return reply.status(201).send(result[0]);
   });
 
-  // --- DIA 2: GET ---
   app.get("/habits", async () => {
     const allHabits = await db.select().from(habits);
     return allHabits;
   });
 
-  // --- DIA 3: PATCH ---
   app.patch("/habits/:id", async (request, reply) => {
     const { id } = request.params as { id: string };
 
@@ -49,7 +46,6 @@ export async function habitRoutes(app: FastifyInstance) {
     }
   });
 
-  // --- DIA 3: DELETE ---
   app.delete("/habits/:id", async (request, reply) => {
     const { id } = request.params as { id: string };
 
