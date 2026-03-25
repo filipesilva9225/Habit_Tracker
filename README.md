@@ -2,8 +2,6 @@
 
 Um aplicativo web moderno e responsivo para gerenciamento de hábitos diários. Construído do zero com foco em performance e uma interface de usuário agradável, permitindo criar, listar, concluir e excluir hábitos, com uma barra de progresso calculada em tempo real.
 
-![Habit Tracker Preview](./frontend/src/assets/hero.png)
-
 ## 🛠️ Tecnologias Utilizadas
 
 Este projeto foi desenvolvido utilizando as seguintes tecnologias:
